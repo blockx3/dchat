@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from pydantic import BaseModel
 import os
 import uvicorn
@@ -26,7 +26,7 @@ from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.messages import AIMessage
-
+from fastapi.middleware.cors import CORSMiddleware
 
 
 load_dotenv()
@@ -41,9 +41,22 @@ UPSTASH_REST_TOKEN = os.getenv("UPSTASH_REST_TOKEN")
 
 class Item(BaseModel):
     question: str
+    
+# class UploadFile(BaseModel):
+#     question: str
 
 
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Common variables used in both POST routes
 
@@ -140,6 +153,28 @@ async def create_item(item: Item):
     
     return {"message": res}
 
+@app.post("/upload")
+async def upload_file(file: UploadFile = File(...)):
+    if file.content_type != "application/pdf":
+        raise HTTPException(status_code=400, detail="Please upload a PDF file!")
+
+    file_location = f"files/input/{file.filename}"
+
+    # Ensure the directory exists
+    os.makedirs(os.path.dirname(file_location), exist_ok=True)
+
+    # Save the file content
+    with open(file_location, "wb") as f:
+        content = await file.read()  # Read file content asynchronously
+        f.write(content)  # Write content to the file
+
+    return {
+        "pdf_name": file.filename,
+        "Content-Type": file.content_type,
+        "file_location": file_location,
+        "file_size": f"{os.path.getsize(file_location) / 1_048_576:.2f} MB",  # Get file size in MB
+    }
+
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8880)
