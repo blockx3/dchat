@@ -5,11 +5,11 @@ import { revalidatePath } from "next/cache";
 
 export async function create(question: string, context: string) {
     try {
-      const response = await axios.post("http://0.0.0.0:8000/getResponse", {
+      const response = await axios.post("http://0.0.0.0:8880/getResponse", {
         question,
         context
       });
-      revalidatePath("/");
+      revalidatePath("/chat");
       
       return response.data.message;
     } catch(e) {
@@ -26,6 +26,8 @@ export async function upload(formData: FormData) {
             headers: { "Content-Type": "multipart/form-data" },
         }
     );
+
+    revalidatePath("/chat");
     return result.status;
     
     } catch (error) {

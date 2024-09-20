@@ -2,11 +2,15 @@
 
 import { useState } from "react";
 import { upload } from "../../../actions/user";
+import { useRouter } from "next/navigation";
 
 export default function Upload() {
   const [file, setFile] = useState<FileList | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleUpload = async (e: { preventDefault: () => void }) => {
+        setLoading(true);
         e.preventDefault();
         
         if (!file || file.length === 0) {
@@ -18,8 +22,9 @@ export default function Upload() {
         formData.append("file", file[0]);  // Append the first file (file[0])
         const res = await upload(formData);
         if(res){
-            console.log(res);
+          router.push("/chat");
         }
+        setLoading(false);
     };
 
   return (
@@ -40,6 +45,11 @@ export default function Upload() {
       >
         Submit
       </button>
+      {loading && (
+        <div className="flex justify-center mt-4">
+          <div className="w-6 h-6 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+        </div>
+      )}
     </div>
   );
 }

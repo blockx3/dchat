@@ -167,14 +167,34 @@ async def upload_file(file: UploadFile = File(...)):
     with open(file_location, "wb") as f:
         content = await file.read()  # Read file content asynchronously
         f.write(content)  # Write content to the file
+        
+    
+    pdf_files = [
+        file_location
+    ]
 
-    return {
-        "pdf_name": file.filename,
-        "Content-Type": file.content_type,
-        "file_location": file_location,
-        "file_size": f"{os.path.getsize(file_location) / 1_048_576:.2f} MB",  # Get file size in MB
-    }
+    # Load all PDFs
+    all_docs = []
+    for file_path in pdf_files:
+        loader = PyPDFLoader(file_path)
+        docs = loader.load()
+        all_docs.extend(docs)  # Merge all documents into a single list
 
+    # Split the documents
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1000, chunk_overlap=200, add_start_index=True
+    )
+    all_splits = text_splitter.split_documents(all_docs)
+
+    store.add_documents(all_splits)
+    
+    return {"message": "Successfully PDF loaded"}
+
+@app.delete("/delete")
+async def create_item():
+    ids=store.keys()
+    print(ids)
+    return ids
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8880)
