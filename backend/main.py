@@ -13,20 +13,17 @@ from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
 
-from langchain_community.vectorstores.upstash import UpstashVectorStore
 from langchain_mistralai import ChatMistralAI
 
 from langchain_core.messages import HumanMessage     
 from langchain_core.chat_history import InMemoryChatMessageHistory
 
-from langchain.chains import create_history_aware_retriever
-from langchain_core.prompts import MessagesPlaceholder
-
-from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain_core.messages import AIMessage
 from fastapi.middleware.cors import CORSMiddleware
+
+from langchain_postgres import PGVector
+from langchain_postgres.vectorstores import PGVector
 
 
 load_dotenv()
@@ -34,17 +31,9 @@ load_dotenv()
 # Secret keys
 
 secretAPI = os.getenv("MISTRAL_API_KEY")
-UPSTASH_REST_URL = os.getenv("UPSTASH_REST_URL")
-UPSTASH_REST_TOKEN = os.getenv("UPSTASH_REST_TOKEN")
-
-
 
 class Item(BaseModel):
     question: str
-    
-# class UploadFile(BaseModel):
-#     question: str
-
 
 app = FastAPI()
 
@@ -58,55 +47,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+connection = "postgresql+psycopg://langchain:langchain@localhost:6024/langchain"  # Uses psycopg3!
+collection_name = "my_docs"
+
 # Common variables used in both POST routes
 
 embeddings = HuggingFaceEmbeddings()
 
-store = UpstashVectorStore(
-    embedding=embeddings,
-    index_token=UPSTASH_REST_TOKEN,
-    index_url=UPSTASH_REST_URL
+vector_store = PGVector(
+    embeddings=embeddings,
+    collection_name=collection_name,
+    connection=connection,
+    use_jsonb=True,
 )
 
 history={}
 
 llm = ChatMistralAI(model="mistral-large-latest", api_key=secretAPI)
 
-retriever = store.as_retriever(search_type="similarity", search_kwargs={"k": 6})
-
-# POST routes for storing pdf
-
-@app.post("/storePdf")
-async def create_item():
-
-    pdf_files = [
-        "./data/news.pdf",
-        "./data/one.pdf"
-    ]
-
-    # Load all PDFs
-    all_docs = []
-    for file_path in pdf_files:
-        loader = PyPDFLoader(file_path)
-        docs = loader.load()
-        all_docs.extend(docs)  # Merge all documents into a single list
-
-    # Split the documents
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000, chunk_overlap=200, add_start_index=True
-    )
-    all_splits = text_splitter.split_documents(all_docs)
-
-    store.add_documents(all_splits)
-    
-    return {"message": "Successfully PDF loaded"}
+retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 6})
 
 
 # POST routes for Response
 
 @app.post("/getResponse")
 async def create_item(item: Item):
-    retriever = store.as_retriever(search_type="similarity", search_kwargs={"k": 6})
+    retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 6})
 
     system_prompt = (
         "You are an assistant for question-answering tasks. "
@@ -153,6 +119,8 @@ async def create_item(item: Item):
     
     return {"message": res}
 
+# POST routes for storing pdf
+
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     if file.content_type != "application/pdf":
@@ -186,15 +154,10 @@ async def upload_file(file: UploadFile = File(...)):
     )
     all_splits = text_splitter.split_documents(all_docs)
 
-    store.add_documents(all_splits)
+    vector_store.add_documents(all_splits)
     
     return {"message": "Successfully PDF loaded"}
 
-@app.delete("/delete")
-async def create_item():
-    ids=store.keys()
-    print(ids)
-    return ids
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8880)
