@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { create } from "../../../actions/user";
+import { create, deletePdf } from "../../../actions/user";
+import Link from "next/link";
 
 interface ConversationItem {
   question: string;
@@ -15,6 +16,7 @@ export default function Content() {
   const [context, setContext] = useState<string>("");
   const [conversation, setConversation] = useState<ConversationItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [delLoading, setDelLoading] = useState<boolean>(false);
 
   const handleSubmit = async () => {
     setLoading(true); // Set loading to true when starting to generate the answer
@@ -31,15 +33,41 @@ export default function Content() {
     setLoading(false); // Set loading to false when done
   };
 
+  const handleDelete = async () => {
+    setDelLoading(true);
+    const res = await deletePdf();
+
+    if (res) {
+      router.push("/");
+    }
+    setDelLoading(false);
+  };
+
   return (
     <div>
       <div className="flex justify-end">
-        <button
-          type="button"
-          className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-        >
-          Delete pdf
-        </button>
+        <div className="flex flex-col gap-2">
+          <button
+            onClick={handleDelete}
+            type="button"
+            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+          >
+            Delete pdf
+          </button>
+          {delLoading && (
+            <div className="flex justify-center mt-4">
+              <div className="w-6 h-6 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+            </div>
+          )}
+          <Link href={'/'}>
+            <button
+              type="button"
+              className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+            >
+              Upload PDF
+            </button>
+          </Link>
+        </div>
       </div>
       <div className="flex flex-col max-w-2xl mx-auto p-4 bg-[#3C3D37] shadow-lg rounded-xl">
         <div className="flex flex-col gap-4 mb-4">

@@ -1,10 +1,8 @@
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, UploadFile
 from pydantic import BaseModel
 import os
 import uvicorn
 from dotenv import load_dotenv
-
-from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -24,7 +22,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from langchain_postgres import PGVector
 from langchain_postgres.vectorstores import PGVector
-
+from io import BytesIO
+from PyPDF2 import PdfReader
+from langchain.schema import Document
 
 load_dotenv()
 
@@ -47,8 +47,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-connection = "postgresql+psycopg://langchain:langchain@localhost:6024/langchain"  # Uses psycopg3!
-collection_name = "my_docs"
+#DB connection string and collection name
+
+collection_name = os.getenv("collection_name")
+connection = os.getenv("connection")  # Uses psycopg3!
 
 # Common variables used in both POST routes
 
@@ -121,42 +123,39 @@ async def create_item(item: Item):
 
 # POST routes for storing pdf
 
+def load_pdf_from_bytes(pdf_bytes):
+    pdf_file = BytesIO(pdf_bytes)
+    pdf_reader = PdfReader(pdf_file)
+    return pdf_reader
+
+
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
-    if file.content_type != "application/pdf":
-        raise HTTPException(status_code=400, detail="Please upload a PDF file!")
-
-    file_location = f"files/input/{file.filename}"
-
-    # Ensure the directory exists
-    os.makedirs(os.path.dirname(file_location), exist_ok=True)
-
-    # Save the file content
-    with open(file_location, "wb") as f:
-        content = await file.read()  # Read file content asynchronously
-        f.write(content)  # Write content to the file
-        
+    # Read the file content
+    content = await file.read()
     
-    pdf_files = [
-        file_location
-    ]
-
-    # Load all PDFs
-    all_docs = []
-    for file_path in pdf_files:
-        loader = PyPDFLoader(file_path)
-        docs = loader.load()
-        all_docs.extend(docs)  # Merge all documents into a single list
-
-    # Split the documents
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000, chunk_overlap=200, add_start_index=True
-    )
-    all_splits = text_splitter.split_documents(all_docs)
-
-    vector_store.add_documents(all_splits)
+    # Load PDF from the file bytes using the load_pdf_from_bytes function
+    pdf_reader = load_pdf_from_bytes(content)
     
-    return {"message": "Successfully PDF loaded"}
+    for page in pdf_reader.pages:
+        text = page.extract_text()
+        if text:
+            text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+            docs = [Document(page_content=x) for x in text_splitter.split_text(text)]
+            print(docs)
+            vector_store.add_documents(docs)
+    
+    return {"message": "Successfully loaded PDF"}
+
+
+@app.delete("/del")
+async def delete_all_ids():
+    t=vector_store.delete_collection()
+    # t=vector_store.drop_tables()
+    # t=vector_store.adelete(collection_only=True)
+    print(t)
+    
+    return "Successfully deleted Collection"
 
 
 if __name__ == "__main__":

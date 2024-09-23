@@ -34,3 +34,18 @@ export async function upload(formData: FormData) {
         console.error("Error uploading file", error);
     }
 };
+
+export async function deletePdf(){
+  try {
+    const result = await axios.delete(
+      "http://0.0.0.0:8880/del"  
+    );
+    revalidatePath("/");
+    console.log(result);
+    
+    return "deleted";
+  } catch(error) {
+    console.log("Error", error);
+    
+  }
+}
