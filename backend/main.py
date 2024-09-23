@@ -56,24 +56,28 @@ connection = os.getenv("connection")  # Uses psycopg3!
 
 embeddings = HuggingFaceEmbeddings()
 
-vector_store = PGVector(
-    embeddings=embeddings,
-    collection_name=collection_name,
-    connection=connection,
-    use_jsonb=True,
-)
+# vector_store = PGVector(
+#     embeddings=embeddings,
+#     collection_name=collection_name,
+#     connection=connection,
+#     use_jsonb=True,
+# )
 
 history={}
 
 llm = ChatMistralAI(model="mistral-large-latest", api_key=secretAPI)
-
-retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 6})
 
 
 # POST routes for Response
 
 @app.post("/getResponse")
 async def create_item(item: Item):
+    vector_store = PGVector(
+        embeddings=embeddings,
+        collection_name=collection_name,
+        connection=connection,
+        use_jsonb=True,
+    )
     retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 6})
 
     system_prompt = (
@@ -117,7 +121,6 @@ async def create_item(item: Item):
     model_with_memory=RunnableWithMessageHistory(llm,get_session_history)
     
     res = model_with_memory.invoke([HumanMessage(content=item.question)],config=config).content
-    print(res)
     
     return {"message": res}
 
@@ -132,6 +135,12 @@ def load_pdf_from_bytes(pdf_bytes):
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     # Read the file content
+    vector_store = PGVector(
+        embeddings=embeddings,
+        collection_name=collection_name,
+        connection=connection,
+        use_jsonb=True,
+    )
     content = await file.read()
     
     # Load PDF from the file bytes using the load_pdf_from_bytes function
@@ -142,7 +151,6 @@ async def upload_file(file: UploadFile = File(...)):
         if text:
             text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
             docs = [Document(page_content=x) for x in text_splitter.split_text(text)]
-            print(docs)
             vector_store.add_documents(docs)
     
     return {"message": "Successfully loaded PDF"}
@@ -150,10 +158,13 @@ async def upload_file(file: UploadFile = File(...)):
 
 @app.delete("/del")
 async def delete_all_ids():
-    t=vector_store.delete_collection()
-    # t=vector_store.drop_tables()
-    # t=vector_store.adelete(collection_only=True)
-    print(t)
+    vector_store = PGVector(
+        embeddings=embeddings,
+        collection_name=collection_name,
+        connection=connection,
+        use_jsonb=True,
+    )
+    vector_store.delete_collection()
     
     return "Successfully deleted Collection"
 
