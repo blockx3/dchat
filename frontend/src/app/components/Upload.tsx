@@ -22,7 +22,7 @@ export default function Upload() {
         formData.append("file", file[0]);  // Append the first file (file[0])
         const res = await upload(formData);
         if(res){
-          router.push("/chat");
+          router.push(`/chat/${res}`);
         }
         setLoading(false);
     };

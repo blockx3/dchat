@@ -10,8 +10,9 @@ interface ConversationItem {
   answer: string;
 }
 
-export default function Content() {
+export default function Content(collection: {collection: string}) {
   const router = useRouter();
+  const collectionName = collection.collection;  
   const [question, setQuestion] = useState<string>("");
   const [context, setContext] = useState<string>("");
   const [conversation, setConversation] = useState<ConversationItem[]>([]);
@@ -21,21 +22,23 @@ export default function Content() {
   const handleSubmit = async () => {
     setLoading(true); // Set loading to true when starting to generate the answer
 
-    const res = await create(question, context);
+    const res = await create(question, context, collectionName);
 
     if (res) {
       setConversation([...conversation, { question, answer: res }]);
       setQuestion("");
       setContext("");
 
-      router.push("/chat");
+      // router.push("/chat");
     }
     setLoading(false); // Set loading to false when done
   };
 
   const handleDelete = async () => {
     setDelLoading(true);
-    const res = await deletePdf();
+    
+    const res = await deletePdf(collectionName);
+    
 
     if (res) {
       router.push("/");

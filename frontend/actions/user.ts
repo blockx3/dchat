@@ -3,14 +3,15 @@
 import axios from "axios";
 import { revalidatePath } from "next/cache";
 
-export async function create(question: string, context: string) {
+export async function create(question: string, context: string, collectionName: string) {
+  
     try {
       const response = await axios.post("http://0.0.0.0:8880/getResponse", {
         question,
-        context
+        context, 
+        collectionName
       });
       revalidatePath("/chat");
-      
       return response.data.message;
     } catch(e) {
       return e;
@@ -28,20 +29,24 @@ export async function upload(formData: FormData) {
     );
 
     revalidatePath("/chat");
-    return result.status;
+    
+    return result.data.collection_name;
     
     } catch (error) {
         console.error("Error uploading file", error);
     }
 };
 
-export async function deletePdf(){
+export async function deletePdf(collectionName: string){
   try {
-    const result = await axios.delete(
-      "http://0.0.0.0:8880/del"  
-    );
+    const result = await axios.delete( "http://0.0.0.0:8880/del", {
+      data:{
+        collectionName: collectionName
+      }
+    })
+    console.log("consolellog "+result);
+    
     revalidatePath("/");
-    console.log(result);
     
     return "deleted";
   } catch(error) {

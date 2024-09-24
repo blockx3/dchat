@@ -25,6 +25,7 @@ from langchain_postgres.vectorstores import PGVector
 from io import BytesIO
 from PyPDF2 import PdfReader
 from langchain.schema import Document
+import uuid
 
 load_dotenv()
 
@@ -34,6 +35,10 @@ secretAPI = os.getenv("MISTRAL_API_KEY")
 
 class Item(BaseModel):
     question: str
+    collectionName: str
+    
+class Info(BaseModel):
+    collectionName: str
 
 app = FastAPI()
 
@@ -56,12 +61,21 @@ connection = os.getenv("connection")  # Uses psycopg3!
 
 embeddings = HuggingFaceEmbeddings()
 
-# vector_store = PGVector(
-#     embeddings=embeddings,
-#     collection_name=collection_name,
-#     connection=connection,
-#     use_jsonb=True,
-# )
+def vector_db(collection):
+    vector_store = PGVector(
+        embeddings=embeddings,
+        collection_name=collection,
+        connection=connection,
+        use_jsonb=True,
+    )
+    return vector_store
+
+#Post route
+def load_pdf_from_bytes(pdf_bytes):
+    pdf_file = BytesIO(pdf_bytes)
+    pdf_reader = PdfReader(pdf_file)
+    return pdf_reader
+    
 
 history={}
 
@@ -72,12 +86,8 @@ llm = ChatMistralAI(model="mistral-large-latest", api_key=secretAPI)
 
 @app.post("/getResponse")
 async def create_item(item: Item):
-    vector_store = PGVector(
-        embeddings=embeddings,
-        collection_name=collection_name,
-        connection=connection,
-        use_jsonb=True,
-    )
+    vector_store = vector_db(item.collectionName)
+    
     retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 6})
 
     system_prompt = (
@@ -126,21 +136,16 @@ async def create_item(item: Item):
 
 # POST routes for storing pdf
 
-def load_pdf_from_bytes(pdf_bytes):
-    pdf_file = BytesIO(pdf_bytes)
-    pdf_reader = PdfReader(pdf_file)
-    return pdf_reader
-
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
+     
+    random = uuid.uuid4().hex[:10].upper()
+    collection = 'c'+random+'n'
+    
+    vector_store = vector_db(collection)
+    
     # Read the file content
-    vector_store = PGVector(
-        embeddings=embeddings,
-        collection_name=collection_name,
-        connection=connection,
-        use_jsonb=True,
-    )
     content = await file.read()
     
     # Load PDF from the file bytes using the load_pdf_from_bytes function
@@ -153,20 +158,15 @@ async def upload_file(file: UploadFile = File(...)):
             docs = [Document(page_content=x) for x in text_splitter.split_text(text)]
             vector_store.add_documents(docs)
     
-    return {"message": "Successfully loaded PDF"}
+    return {"collection_name": collection}
 
 
 @app.delete("/del")
-async def delete_all_ids():
-    vector_store = PGVector(
-        embeddings=embeddings,
-        collection_name=collection_name,
-        connection=connection,
-        use_jsonb=True,
-    )
+async def delete_all_ids(delInfo: Info):
+    vector_store = vector_db(delInfo.collectionName)
     vector_store.delete_collection()
     
-    return "Successfully deleted Collection"
+    return {"message": "Deleted"}
 
 
 if __name__ == "__main__":
