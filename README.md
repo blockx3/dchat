@@ -1,37 +1,21 @@
-# DChat
+# dchat
 
-DChat is an AI-powered chatbot designed to assist users by allowing them to upload PDFs and ask related questions. The chatbot utilizes advanced language processing to provide hints and resources tailored to the user's needs.
+dchat is an AI-powered RAG-based chatbot that allows users to upload files and ask questions related to their content. It offers versatile use cases, with a key innovation focused on privacy. Uploaded files are securely handled, ensuring confidentiality. By logging in with a Google account, users can maintain and manage their chat history seamlessly. The chatbot leverages the Mistral AI LLM model, ensuring high-quality responses and efficient processing of user queries.
 
-## Features
+## Contribution
 
-- **PDF Upload**: Users can upload PDF documents for query assistance.
-- **Query Support**: Ask questions related to the uploaded PDFs.
-- **Model**: Powered by MistralAI for accurate responses.
-- **Vector Store**: Utilizes PGVector for efficient data retrieval.
-- **Frontend**: Built with Next.js for a responsive user interface.
-- **Backend**: Developed using FastAPI for fast and efficient server-side operations.
+1. Pick an issue and suggest your solution OR create an issue regarding what better you can add to the project.
+2. Start working on the issue and create a branch and open pull request.
+3. Once the PR is reviewed and approved, it will be merged to the main branch 💫.
 
-## Getting Started
+## Tech Stack used
 
-### Prerequisites
-
-Make sure you have the following installed:
-
-- Python 3.x
-- PostgreSQL
-
-# Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch:
-   ```bash
-   git checkout -b feature/YourFeature
-3. Make your changes and commit them:
-   ```bash
-   git commit -m 'Add new feature'
-4. Push to the branch:
-   ```bash
-   git push origin feature/YourFeature
-
+1. Mistral AI for the large language model (LLM)
+2. PGVector as the vector database
+3. LangChain for integrating AI and retrieval-augmented generation (RAG)
+4. FastAPI for the backend
+5. Next.js & React for the frontend
+6. Shadcn/UI & Tailwind CSS for styling
+7. Prisma ORM & PostgreSQL for database management
+8. Next-Auth for authentication
+9. Docker for containerized deployment
