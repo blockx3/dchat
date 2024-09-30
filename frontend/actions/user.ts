@@ -1,7 +1,9 @@
 "use server";
 
+import { prisma } from "@/app/lib/prisma";
 import axios from "axios";
 import { revalidatePath } from "next/cache";
+import { auth } from "../auth"
 
 export async function create(question: string, context: string, collectionName: string) {
   
@@ -20,6 +22,7 @@ export async function create(question: string, context: string, collectionName: 
 
 export async function upload(formData: FormData) {
   try {
+    const session = await auth();
     const result = await axios.post(
         "http://0.0.0.0:8880/upload",
         formData,  // Send the formData instead of the file directly
@@ -28,8 +31,23 @@ export async function upload(formData: FormData) {
         }
     );
 
-    revalidatePath("/chat");
+    const user = await prisma.user.findUnique({
+      where: {
+        email: session?.user?.email || ""
+      }
+    });
+    console.log(user);
     
+
+    await prisma.collection.create({
+      data: {
+        CollectionName: result.data.collection_name,
+        userID: user?.id || ""
+      }
+    })
+    
+    revalidatePath("/chat");
+
     return result.data.collection_name;
     
     } catch (error) {
@@ -44,6 +62,13 @@ export async function deletePdf(collectionName: string){
         collectionName: collectionName
       }
     })
+
+    await prisma.collection.delete({
+      where: {
+        CollectionName: collectionName
+      }
+    })
+    
     console.log("consolellog "+result);
     
     revalidatePath("/");

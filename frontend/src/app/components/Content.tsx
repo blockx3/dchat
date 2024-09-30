@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { create, deletePdf } from "../../../actions/user";
 import Link from "next/link";
+import SignOut from "./SignOut";
 
 interface ConversationItem {
   question: string;
@@ -47,6 +48,7 @@ export default function Content(collection: {collection: string}) {
     <div>
       <div className="flex justify-end">
         <div className="flex flex-col gap-2">
+          <SignOut />
           <button
             onClick={handleDelete}
             type="button"
