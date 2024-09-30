@@ -1,12 +1,12 @@
-// import Content from "./components/Content";
+import { auth } from "../../auth";
+import SignIn from "./components/SignIn";
 
-import Upload from "./components/Upload";
-
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
   return (
-    <div className="bg-[#181C14] h-screen">
-      <Upload />
-      {/* <Content /> */}
+    <div className="bg-[#181C14] h-screen text-white">
+      <SignIn />
+      {session?.user?.name}
     </div>
   );
 }
