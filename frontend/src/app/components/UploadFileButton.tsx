@@ -16,8 +16,11 @@ export default function UploadFileButton() {
     e.preventDefault();
 
     if (!file || file.length === 0) {
-      window.alert("Please Upload a file.");
+      alert("Please Upload a file.");
+      setLoading(false);
       return;
+    } else if(file[0].size > 1000000) { // Not more than 1MB
+      alert("File is more than 1MB!");
     }
 
     const formData = new FormData();
