@@ -36,8 +36,6 @@ export async function upload(formData: FormData) {
         email: session?.user?.email || ""
       }
     });
-    console.log(user);
-    
 
     await prisma.collection.create({
       data: {
