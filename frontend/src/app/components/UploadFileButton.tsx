@@ -14,7 +14,8 @@ export default function UploadFileButton() {
   const handleUpload = async (e: { preventDefault: () => void }) => {
     setLoading(true);
     e.preventDefault();
-
+    
+    // If no file is selected
     if (!file || file.length === 0) {
       alert("Please Upload a file.");
       setLoading(false);
@@ -54,6 +55,7 @@ export default function UploadFileButton() {
         </Button>
       ) : (
         <Button
+          disabled={!file || file.length === 0}
           onClick={handleUpload}
           className="text-white rounded-xl bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium text-sm px-5 py-2.5 me-2 mb-2"
         >

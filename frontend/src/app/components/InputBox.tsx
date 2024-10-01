@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { create } from "../../../actions/user";
@@ -10,11 +10,11 @@ interface ConversationItem {
 }
 
 type Conversation = {
-    collectionName: string
-}
+  collectionName: string;
+};
 
 export default function InputBox(props: Conversation) {
-  const {collectionName} = props;
+  const { collectionName } = props;
   const [question, setQuestion] = useState<string>("");
   const [context, setContext] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -30,6 +30,7 @@ export default function InputBox(props: Conversation) {
       setQuestion("");
       setContext("");
     }
+
     setLoading(false); // Set loading to false when done
   };
 
@@ -62,12 +63,12 @@ export default function InputBox(props: Conversation) {
       <button
         className="text-white bg-[#697565] hover:bg-[#ECDFCC] hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
         onClick={handleSubmit}
-        disabled={loading} // Disable button while loading
+        disabled={loading || question === ""} // Disable button while question is empty and loading
       >
         {loading ? (
           <div className="flex w-full justify-center gap-2">
             <Loader2 className="h-4 w-4 animate-spin" />
-            <span>Loading...</span> 
+            <span>Loading...</span>
           </div>
         ) : (
           "Submit"
