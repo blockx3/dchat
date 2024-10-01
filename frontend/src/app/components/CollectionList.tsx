@@ -1,6 +1,8 @@
 "use client"
 
 import { useRouter } from "next/navigation"
+// import { SheetSide } from "./SheetSide";
+import DeletePdf from "./DeletePdf";
 
 interface Collection {
     id: string,
@@ -19,12 +21,16 @@ export default function CollectionList({list}: CollectionListProps) {
     }
     return (
         <div className="text-white flex flex-col gap-3">
+            {/* <SheetSide /> */}
             {list.map((collection) => (
-                <button onClick={()=>handleClick(collection.CollectionName)} className="bg-gray-400 p-4" key={collection.id}>
-                    <div>
+                <div key={collection.id} className="flex">
+                    <button onClick={()=>handleClick(collection.CollectionName)} className="bg-gray-400 p-4">
                         {collection.CollectionName}
+                    </button>
+                    <div>
+                        <DeletePdf collectionName={collection.CollectionName} />
                     </div>
-                </button>
+                </div>
             ))}
         </div>
     )

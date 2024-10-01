@@ -1,10 +1,11 @@
 import SignOut from "./SignOut";
-import DeletePdf from "./DeletePdf";
+// import DeletePdf from "./DeletePdf";
 import UploadButton from "./UploadButton";
 import InputBox from "./InputBox";
 import { auth } from "../../../auth";
 import { prisma } from "../lib/prisma";
-import CollectionList from "./CollectionList";
+// import CollectionList from "./CollectionList";
+import { SheetSide } from "./SheetSide";
 
 
 export default async function Content(collection: { collection: string }) {
@@ -24,13 +25,14 @@ export default async function Content(collection: { collection: string }) {
   
 
   return (
-    <div className="grid grid-cols-2">
-      <CollectionList list={list} />
+    <div className="">
+      {/* <CollectionList list={list} /> */}
+      <SheetSide list={list} />
       <div>
         <div className="flex justify-end">
           <div className="flex flex-col gap-2">
             <SignOut />
-            <DeletePdf collectionName={collectionName} />
+            {/* <DeletePdf collectionName={collectionName} /> */}
             <UploadButton />
           </div>
         </div>
