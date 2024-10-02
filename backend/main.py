@@ -158,7 +158,7 @@ async def upload_file(file: UploadFile = File(...)):
             docs = [Document(page_content=x) for x in text_splitter.split_text(text)]
             vector_store.add_documents(docs)
     
-    return {"collection_name": collection}
+    return {"collection_name": collection, "file_name": file.filename}
 
 
 @app.delete("/del")

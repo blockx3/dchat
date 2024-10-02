@@ -3,22 +3,24 @@
 import { useState } from "react";
 import { create } from "../../../actions/user";
 import { Loader2 } from "lucide-react";
+import { JsonValue } from "@prisma/client/runtime/library";
 
-interface ConversationItem {
-  question: string;
-  answer: string;
+interface History {
+  id: string
+  collectionName: string
+  conversationObject: JsonValue
 }
 
-type Conversation = {
+interface Conversation {
   collectionName: string;
+  history: History[]
 };
 
 export default function InputBox(props: Conversation) {
-  const { collectionName } = props;
+  const { collectionName, history } = props;
   const [question, setQuestion] = useState<string>("");
   const [context, setContext] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [conversation, setConversation] = useState<ConversationItem[]>([]);
 
   const handleSubmit = async () => {
     setLoading(true); // Set loading to true when starting to generate the answer
@@ -26,7 +28,6 @@ export default function InputBox(props: Conversation) {
     const res = await create(question, context, collectionName);
 
     if (res) {
-      setConversation([...conversation, { question, answer: res }]);
       setQuestion("");
       setContext("");
     }
@@ -37,16 +38,18 @@ export default function InputBox(props: Conversation) {
   return (
     <>
       <div className="flex flex-col gap-4 mb-4">
-        {conversation.map((item, index) => (
+      {
+        history.map((item, index) => (
           <div key={index} className="flex flex-col gap-2">
             <div className="bg-blue-100 p-3 rounded-lg">
-              <strong>User:</strong> {item.question}
+              <strong>User:</strong> {item.conversationObject?.question}
             </div>
             <div className="bg-gray-100 p-3 rounded-lg">
-              <strong>Chatbot:</strong> {item.answer}
+              <strong>Chatbot:</strong> {item.conversationObject?.answer}
             </div>
           </div>
-        ))}
+        ))
+      }
       </div>
       <input
         onChange={(e) => {

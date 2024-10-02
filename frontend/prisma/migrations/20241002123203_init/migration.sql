@@ -67,9 +67,19 @@ CREATE TABLE "Authenticator" (
 CREATE TABLE "Collection" (
     "id" TEXT NOT NULL,
     "CollectionName" TEXT NOT NULL,
+    "pdfName" TEXT NOT NULL,
     "userID" TEXT NOT NULL,
 
     CONSTRAINT "Collection_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ConversationHistory" (
+    "id" TEXT NOT NULL,
+    "conversationObject" JSONB NOT NULL,
+    "collectionName" TEXT NOT NULL,
+
+    CONSTRAINT "ConversationHistory_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -94,4 +104,7 @@ ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "Authenticator" ADD CONSTRAINT "Authenticator_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Collection" ADD CONSTRAINT "Collection_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Collection" ADD CONSTRAINT "Collection_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ConversationHistory" ADD CONSTRAINT "ConversationHistory_collectionName_fkey" FOREIGN KEY ("collectionName") REFERENCES "Collection"("CollectionName") ON DELETE CASCADE ON UPDATE CASCADE;

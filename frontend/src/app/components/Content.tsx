@@ -19,8 +19,13 @@ export default async function Content(collection: { collection: string }) {
       }
   })
 
-  const list = user?.Collection || [];
-  
+  const history = await prisma.conversationHistory.findMany({
+    where: {
+        collectionName: collectionName
+    }
+  })
+
+  const list = user?.Collection || [];  
 
   return (
     <>
@@ -35,6 +40,7 @@ export default async function Content(collection: { collection: string }) {
         <div className="flex flex-col max-w-2xl mx-auto p-4 bg-[#3C3D37] shadow-lg rounded-xl">
           <InputBox
             collectionName={collectionName}
+            history={history}
           />
         </div>
       </div>

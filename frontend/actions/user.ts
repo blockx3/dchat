@@ -13,6 +13,15 @@ export async function create(question: string, context: string, collectionName: 
         context, 
         collectionName
       });
+      await prisma.conversationHistory.create({
+        data: {
+          collectionName: collectionName,
+          conversationObject: {
+            question: question,
+            answer: response.data.message
+          }
+        }
+      })
       revalidatePath("/chat");
       return response.data.message;
     } catch(e) {
@@ -30,17 +39,21 @@ export async function upload(formData: FormData) {
             headers: { "Content-Type": "multipart/form-data" },
         }
     );
+    console.log(result.data);
+    
 
     const user = await prisma.user.findUnique({
       where: {
         email: session?.user?.email || ""
       }
     });
-
+    console.log(user+" user");
+    
     await prisma.collection.create({
       data: {
         CollectionName: result.data.collection_name,
-        userID: user?.id || ""
+        pdfName: result.data.file_name,
+        userID: user?.id as string
       }
     })
     

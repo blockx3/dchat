@@ -17,15 +17,18 @@ export default function DeletePdf(props: Delete) {
 
   const handleDelete = async () => {
     setDelLoading(true);
+    
+    
     const res = await deletePdf(collectionName);
     if (res) {
+      
       router.push("/home");
     }
     setDelLoading(false);
   };
 
   return (
-    <div>
+    <>
       {!delLoading ? (
         <Button
           onClick={handleDelete}
@@ -42,6 +45,6 @@ export default function DeletePdf(props: Delete) {
           <div className="pl-2">Please wait</div>
         </Button>
       )}
-    </div>
+    </>
   );
 }

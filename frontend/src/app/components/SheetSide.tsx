@@ -19,6 +19,7 @@ interface Collection {
   id: string;
   CollectionName: string;
   userID: string;
+  pdfName: string;
 }
 
 interface CollectionListProps {
@@ -49,7 +50,7 @@ export function SheetSide({ list }: CollectionListProps) {
                     onClick={() => handleClick(collection.CollectionName)}
                     className="bg-gray-400 p-4"
                   >
-                    <SheetTitle> {collection.CollectionName} </SheetTitle>
+                    <SheetTitle> {collection.pdfName} </SheetTitle>
                   </Button>
                   <SheetDescription>
                     <DeletePdf collectionName={collection.CollectionName} />

@@ -83,6 +83,15 @@ model Authenticator {
 model Collection {
   id String @id @default(cuid())
   CollectionName String @unique
-  user User @relation(fields: [userID],references: [id])
+  pdfName String
+  user User @relation(fields: [userID],references: [id], onDelete: Cascade)
   userID String
+  ConversationHistory ConversationHistory[]
+}
+
+model ConversationHistory {
+  id String @id @default(cuid())
+  conversationObject Json
+  collection Collection @relation(fields: [collectionName], references: [CollectionName], onDelete: Cascade)
+  collectionName String
 }
