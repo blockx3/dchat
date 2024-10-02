@@ -29,7 +29,7 @@ export default async function Content(collection: { collection: string }) {
 
   return (
     <>
-      <SheetSide list={list} />
+      <SheetSide list={list} collectionName={collectionName} />
       <div>
         <div className="flex justify-end">
           <div className="flex flex-col gap-2">

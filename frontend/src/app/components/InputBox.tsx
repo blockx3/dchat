@@ -22,10 +22,16 @@ export default function InputBox(props: Conversation) {
   const [context, setContext] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
+
+  // It remove space from question.
+
+  const trimedQuestion= question.trim();
+  const trimedContext=context.trim();
+
   const handleSubmit = async () => {
     setLoading(true); // Set loading to true when starting to generate the answer
 
-    const res = await create(question, context, collectionName);
+    const res = await create(trimedQuestion, trimedContext, collectionName);
 
     if (res) {
       setQuestion("");
@@ -42,9 +48,11 @@ export default function InputBox(props: Conversation) {
         history.map((item, index) => (
           <div key={index} className="flex flex-col gap-2">
             <div className="bg-blue-100 p-3 rounded-lg">
+              {/* @ts-expect-error question */}
               <strong>User:</strong> {item.conversationObject?.question}
             </div>
             <div className="bg-gray-100 p-3 rounded-lg">
+              {/* @ts-expect-error answer */}
               <strong>Chatbot:</strong> {item.conversationObject?.answer}
             </div>
           </div>
@@ -66,7 +74,7 @@ export default function InputBox(props: Conversation) {
       <button
         className="text-white bg-[#697565] hover:bg-[#ECDFCC] hover:text-black focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
         onClick={handleSubmit}
-        disabled={loading || question === ""} // Disable button while question is empty and loading
+        disabled={loading || trimedQuestion === ""} // Disable button while question is empty and loading
       >
         {loading ? (
           <div className="flex w-full justify-center gap-2">

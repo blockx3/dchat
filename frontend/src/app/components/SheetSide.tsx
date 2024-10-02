@@ -14,6 +14,7 @@ import {
 import { useRouter } from "next/navigation";
 import DeletePdf from "./DeletePdf";
 import { Menu } from "lucide-react";
+import { useState } from "react";
 
 interface Collection {
   id: string;
@@ -24,12 +25,15 @@ interface Collection {
 
 interface CollectionListProps {
   list: Collection[];
+  collectionName: string
 }
 
-export function SheetSide({ list }: CollectionListProps) {
+export function SheetSide({ list,collectionName }: CollectionListProps) {
   const router = useRouter();
+  const [activeCollection, setActiveCollection] = useState<string | null>(collectionName);
 
   function handleClick(CollectionName: string) {
+    setActiveCollection(CollectionName);
     router.push(`/chat/${CollectionName}`);
   }
 
@@ -43,12 +47,19 @@ export function SheetSide({ list }: CollectionListProps) {
         </SheetTrigger>
         <SheetContent side="left">
           {list.map((collection) => {
+            const isActive = activeCollection === collection.CollectionName;
+            console.log(isActive);
+            
             return (
               <div key={collection.id}>
                 <SheetHeader className="flex items-center">
                   <Button
                     onClick={() => handleClick(collection.CollectionName)}
-                    className="bg-gray-400 p-4"
+                    className={`p-4 ${
+                      isActive
+                        ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                        : 'bg-gray-400 hover:bg-gray-600'
+                    }`}
                   >
                     <SheetTitle> {collection.pdfName} </SheetTitle>
                   </Button>

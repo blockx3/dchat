@@ -39,7 +39,6 @@ export async function upload(formData: FormData) {
             headers: { "Content-Type": "multipart/form-data" },
         }
     );
-    console.log(result.data);
     
 
     const user = await prisma.user.findUnique({
@@ -47,7 +46,6 @@ export async function upload(formData: FormData) {
         email: session?.user?.email || ""
       }
     });
-    console.log(user+" user");
     
     await prisma.collection.create({
       data: {
@@ -68,7 +66,7 @@ export async function upload(formData: FormData) {
 
 export async function deletePdf(collectionName: string){
   try {
-    const result = await axios.delete( "http://0.0.0.0:8880/del", {
+    await axios.delete( "http://0.0.0.0:8880/del", {
       data:{
         collectionName: collectionName
       }
@@ -79,8 +77,6 @@ export async function deletePdf(collectionName: string){
         CollectionName: collectionName
       }
     })
-    
-    console.log("consolellog "+result);
     
     revalidatePath("/");
     
