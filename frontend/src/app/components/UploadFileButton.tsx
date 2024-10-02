@@ -14,21 +14,31 @@ export default function UploadFileButton() {
   const handleUpload = async (e: { preventDefault: () => void }) => {
     setLoading(true);
     e.preventDefault();
+
+    // Get file extension like 'pdf, docx'
+    // TODO ts error
+    
+    //@ts-expect-error TODO
+    const fileExtension = file[0].name.split('.').pop().toLowerCase();
     
     // If no file is selected
     if (!file || file.length === 0) {
       alert("Please Upload a file.");
       setLoading(false);
       return;
-    } else if(file[0].size > 1000000) { // Not more than 1MB
-      alert("File is more than 1MB!");
+    } else if(fileExtension != 'pdf'){
+      alert("Only pdf");
     }
-
-    const formData = new FormData();
-    formData.append("file", file[0]); // Append the first file (file[0])
-    const res = await upload(formData);
-    if (res) {
-      router.push(`/chat/${res}`);
+    else if(file[0].size > 1000000) { // Not more than 1MB
+      alert("File is more than 1MB!");
+    }else {
+      const formData = new FormData();
+      formData.append("file", file[0]); // Append the first file (file[0])
+      const res = await upload(formData);
+      if (res) {
+        router.push(`/chat/${res}`);
+      }
+      setLoading(false);
     }
     setLoading(false);
   };

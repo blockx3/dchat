@@ -48,7 +48,6 @@ export function SheetSide({ list,collectionName }: CollectionListProps) {
         <SheetContent side="left">
           {list.map((collection) => {
             const isActive = activeCollection === collection.CollectionName;
-            console.log(isActive);
             
             return (
               <div key={collection.id}>
