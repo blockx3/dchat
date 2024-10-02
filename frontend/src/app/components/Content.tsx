@@ -4,6 +4,7 @@ import InputBox from "./InputBox";
 import { auth } from "../../../auth";
 import { prisma } from "../lib/prisma";
 import { SheetSide } from "./SheetSide";
+import ProfilePic from "./ProfilePic";
 
 
 export default async function Content(collection: { collection: string }) {
@@ -29,8 +30,11 @@ export default async function Content(collection: { collection: string }) {
 
   return (
     <>
-      <SheetSide list={list} collectionName={collectionName} />
-      <div>
+      <div className="flex justify-between">
+        <SheetSide list={list} collectionName={collectionName} />
+        <ProfilePic />
+      </div>
+      <div className="pt-2">
         <div className="flex justify-end">
           <div className="flex flex-col gap-2">
             <SignOut />
