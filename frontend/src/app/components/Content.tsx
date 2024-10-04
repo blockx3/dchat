@@ -1,10 +1,13 @@
-import SignOut from "./SignOut";
-import UploadButton from "./UploadButton";
+// import SignOut from "./SignOut";
+// import UploadButton from "./UploadButton";
 import InputBox from "./InputBox";
 import { auth } from "../../../auth";
 import { prisma } from "../lib/prisma";
 import { SheetSide } from "./SheetSide";
-import ProfilePic from "./ProfilePic";
+// import ProfilePic from "./ProfilePic";
+import Image from "next/image";
+import logo from "../../../public/logo.png"
+import ProfileDropdown from "./ProfileDropdown";
 
 
 export default async function Content(collection: { collection: string }) {
@@ -30,23 +33,21 @@ export default async function Content(collection: { collection: string }) {
 
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex py-7 px-2 justify-between sticky top-0 z-50 bg-[#0E0A24]">
         <SheetSide list={list} collectionName={collectionName} />
-        <ProfilePic />
+        <Image 
+          src={logo}
+          alt="logo"
+          height={41}
+          width={91}
+        />
+        <ProfileDropdown />
       </div>
       <div className="pt-2">
-        <div className="flex justify-end">
-          <div className="flex flex-col gap-2">
-            <SignOut />
-            <UploadButton />
-          </div>
-        </div>
-        <div className="flex flex-col max-w-2xl mx-auto p-4 bg-[#3C3D37] shadow-lg rounded-xl">
           <InputBox
             collectionName={collectionName}
             history={history}
           />
-        </div>
       </div>
     </>
   );

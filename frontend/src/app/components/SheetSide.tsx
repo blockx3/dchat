@@ -38,12 +38,10 @@ export function SheetSide({ list,collectionName }: CollectionListProps) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-2">
+    <div className="">
       <Sheet>
         <SheetTrigger asChild>
-          <Button className="text-white bg-gray-700 hover:text-white hover:bg-gray-600 w-16">
-            <Menu />
-          </Button>
+            <Menu className="text-white" />
         </SheetTrigger>
         <SheetContent side="left">
           {list.map((collection) => {

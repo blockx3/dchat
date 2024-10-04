@@ -20,6 +20,6 @@ export default {
     },
   },
   theme: {
-    logo: "/logo.jpeg",
+    logo: "/logo.png",
   },
 } satisfies NextAuthConfig;

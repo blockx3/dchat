@@ -6,14 +6,14 @@ export default async function ProfilePic() {
     const session = await auth();
     
     return (
-        <div>
+        <>
             <Image
                 className="rounded-full"
                 src={`${session?.user?.image}`}
-                height={50}
-                width={50}
+                height={40}
+                width={40}
                 alt="image"
             />
-        </div>
+        </>
     )
 }
