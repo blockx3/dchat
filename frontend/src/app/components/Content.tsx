@@ -1,10 +1,7 @@
-// import SignOut from "./SignOut";
-// import UploadButton from "./UploadButton";
 import InputBox from "./InputBox";
 import { auth } from "../../../auth";
 import { prisma } from "../lib/prisma";
 import { SheetSide } from "./SheetSide";
-// import ProfilePic from "./ProfilePic";
 import Image from "next/image";
 import logo from "../../../public/logo.png"
 import ProfileDropdown from "./ProfileDropdown";
@@ -13,6 +10,7 @@ import ProfileDropdown from "./ProfileDropdown";
 export default async function Content(collection: { collection: string }) {
   const collectionName = collection.collection;
   const session = await auth();
+  const userName = session?.user?.name;
 
   const user = await prisma.user.findUnique({
       where: {
@@ -47,6 +45,7 @@ export default async function Content(collection: { collection: string }) {
           <InputBox
             collectionName={collectionName}
             history={history}
+            userName={userName}
           />
       </div>
     </>

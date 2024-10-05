@@ -38,12 +38,15 @@ export function SheetSide({ list,collectionName }: CollectionListProps) {
   }
 
   return (
-    <div className="">
+    <>
       <Sheet>
         <SheetTrigger asChild>
             <Menu className="text-white" />
         </SheetTrigger>
         <SheetContent side="left">
+          <div className="text-white text-3xl py-10">
+            Chat History
+          </div>
           {list.map((collection) => {
             const isActive = activeCollection === collection.CollectionName;
             
@@ -52,7 +55,7 @@ export function SheetSide({ list,collectionName }: CollectionListProps) {
                 <SheetHeader className="flex items-center">
                   <Button
                     onClick={() => handleClick(collection.CollectionName)}
-                    className={`p-4 ${
+                    className={`p-4 w-64 ${
                       isActive
                         ? 'bg-blue-600 hover:bg-blue-700 text-white'
                         : 'bg-gray-400 hover:bg-gray-600'
@@ -79,6 +82,6 @@ export function SheetSide({ list,collectionName }: CollectionListProps) {
           </SheetFooter>
         </SheetContent>
       </Sheet>
-    </div>
+    </>
   );
 }
