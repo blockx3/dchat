@@ -60,12 +60,12 @@ export default function InputBox(props: Conversation) {
   };  
 
   return (
-    <>
+    <div className="md:w-3/5">
     {
       (history.length != 0 || tempHistory.length != 0) ? (
-        <div className="min-h-screen text-white flex flex-col gap-4 mb-4 px-3">
+        <div className="min-h-screen text-white flex flex-col gap-4 md:gap-10 mb-4 px-3 ">
         {history.map((item, index) => (
-          <div key={index} className="flex flex-col gap-2">
+          <div key={index} className="flex flex-col gap-2 md:gap-10">
             <div className="flex justify-end">
               <div className="bg-[#27219C] p-3 rounded-[15px] max-w-[75%]">
                 {/* @ts-expect-error question */}
@@ -83,7 +83,7 @@ export default function InputBox(props: Conversation) {
           </div>
         ))}
         {tempHistory.map((item, index) => (
-          <div key={index} className="flex flex-col gap-2">
+          <div key={index} className="flex flex-col gap-2 md:gap-10">
             {/* Display user's question */}
             <div className="flex justify-end">
               <div className="bg-[#27219C] p-3 rounded-[15px] max-w-[75%]">
@@ -145,6 +145,6 @@ export default function InputBox(props: Conversation) {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -41,7 +41,7 @@ export default async function Content(collection: { collection: string }) {
         />
         <ProfileDropdown />
       </div>
-      <div className="pt-2">
+      <div className="md:flex md:justify-center">
           <InputBox
             collectionName={collectionName}
             history={history}
