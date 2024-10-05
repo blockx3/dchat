@@ -6,7 +6,7 @@ export default function Upload() {
       <div className="text-white flex flex-col gap-5">
         <label
           htmlFor="file-upload"
-          className="bg-green-500 hover:scale-110 text-3xl font-bold p-12 rounded-xl"
+          className="bg-[#27219C] hover:bg-[#352fa3] text-3xl font-bold p-5 rounded-xl"
         >
           Choose file
         </label>

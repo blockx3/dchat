@@ -58,7 +58,7 @@ export function SheetSide({ list,collectionName }: CollectionListProps) {
                     className={`p-4 w-64 ${
                       isActive
                         ? 'bg-[#1b1446] hover:bg-[#3c2e9d] text-white'
-                        : 'bg-[#0E0A24] hover:bg-[#1c163e]'
+                        : 'bg-[#0E0A24] hover:bg-[#13102b]'
                     }`}
                   >
                     <SheetTitle> {collection.pdfName} </SheetTitle>
