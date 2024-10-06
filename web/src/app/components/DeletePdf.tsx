@@ -22,7 +22,7 @@ export default function DeletePdf(props: Delete) {
     const res = await deletePdf(collectionName);
     if (res) {
       
-      router.push("/home");
+      router.push("/upload");
     }
     setDelLoading(false);
   };

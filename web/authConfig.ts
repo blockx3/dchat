@@ -9,7 +9,7 @@ export default {
     // this function runs on each and every request according to the matcher in middleware file
     authorized: async ({ auth, request: { nextUrl } }) => {
       const isLoggedIn = !!auth?.user;
-      const isOnUser = nextUrl.pathname.startsWith("/home");
+      const isOnUser = nextUrl.pathname.startsWith("/upload");
       if (isOnUser) {
         if (isLoggedIn) {
           return true;

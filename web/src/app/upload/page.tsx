@@ -2,8 +2,14 @@ import Image from "next/image";
 import ProfileDropdown from "../components/ProfileDropdown";
 import Upload from "../components/Upload";
 import logo from "../../../public/logo.png"
+import { auth } from "../../../auth";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Page() {
+    const session = await auth();
+    if(!session) {
+        redirect('/');
+    }
     return (
         <div className="bg-[#0E0A24] min-h-screen text-white">
             <div className="flex py-7 px-2 justify-between">
