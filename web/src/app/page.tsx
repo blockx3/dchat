@@ -1,9 +1,9 @@
-import SignIn from "./components/SignIn";
+import Home from "./components/Home";
 
-export default async function Home() {
+export default function Page() {
   return (
-    <div className="bg-[#0E0A24] h-screen text-white flex flex-col items-center justify-center ">
-      <SignIn />
+    <div className="bg-[#0E0A24] min-h-screen">
+      <Home />
     </div>
   );
 }
