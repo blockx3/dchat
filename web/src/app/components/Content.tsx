@@ -5,12 +5,23 @@ import { SheetSide } from "./SheetSide";
 import Image from "next/image";
 import logo from "../../../public/logo.png"
 import ProfileDropdown from "./ProfileDropdown";
+import { redirect } from "next/navigation";
 
 
 export default async function Content(collection: { collection: string }) {
   const collectionName = collection.collection;
   const session = await auth();
   const userName = session?.user?.name;
+
+  const findCollection = await prisma.collection.findUnique({
+    where: {
+      CollectionName: collectionName
+    }
+  })
+
+  if(findCollection == null) {
+    redirect('/upload')
+  }
 
   const user = await prisma.user.findUnique({
       where: {

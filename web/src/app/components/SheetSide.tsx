@@ -3,10 +3,8 @@
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -43,7 +41,7 @@ export function SheetSide({ list,collectionName }: CollectionListProps) {
         <SheetTrigger asChild>
             <Menu className="cursor-pointer text-white" />
         </SheetTrigger>
-        <SheetContent side="left">
+        <SheetContent className="bg-[#0E0A24]" side="left">
           <div className="text-white text-3xl py-10">
             Chat History
           </div>
@@ -70,16 +68,6 @@ export function SheetSide({ list,collectionName }: CollectionListProps) {
               </div>
             );
           })}
-          <SheetFooter>
-            <SheetClose asChild>
-              <Button
-                className="hover:bg-slate-700 text-white bg-slate-500"
-                type="submit"
-              >
-                X
-              </Button>
-            </SheetClose>
-          </SheetFooter>
         </SheetContent>
       </Sheet>
     </>

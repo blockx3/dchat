@@ -51,8 +51,21 @@ export default function InputBox(props: Conversation) {
     ]);
 
     setLoading(true); // Set loading to true when starting to generate the answer
+    
+    // check collection in database
+    // const findCollection = await prisma.collection.findUnique({
+    //   where: {
+    //     CollectionName: collectionName
+    //   }
+    // })
+    // console.log(findCollection);
+    
 
-    await create(trimedQuestion, trimedContext, collectionName);
+    if(collectionName == ""){
+      alert("Select collection");
+    } else {
+      await create(trimedQuestion, trimedContext, collectionName);
+    }
 
     setTempHistory([]);
 
@@ -106,7 +119,7 @@ export default function InputBox(props: Conversation) {
           ))}
         </div>
       ) : (
-        <div className="min-h-screen text-white flex justify-center">
+        <div className="pb-10 text-white flex justify-center">
           <div className="flex flex-col items-center gap-2">
             <Image
               src={logo}

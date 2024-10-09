@@ -22,6 +22,8 @@ export async function create(question: string, context: string, collectionName: 
           }
         }
       })
+      console.log(response.data.message);
+      
       revalidatePath("/chat");
       return response.data.message;
     } catch(e) {
