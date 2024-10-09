@@ -1,11 +1,13 @@
 import Description from "./Home/Description";
+import Footer from "./Home/Footer";
 import Hero from "./Home/Hero";
 import Navbar from "./Home/Navbar";
 import SliderPic from "./Home/SliderPic";
+import { ThreeD } from "./Home/ThreeD";
 
 export default function Home() {
   return (
-    <div className="">
+    <div>
       {/* Navbar */}
       <Navbar />
 
@@ -18,7 +20,10 @@ export default function Home() {
 
         {/* Cards */}
         <SliderPic />
+        <ThreeD />
       </div>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
