@@ -18,7 +18,6 @@ export const DragDrop = () => {
     // TODO ts error
 
     //@ts-expect-error TODO
-
     const fileExtension = file.name.split(".").pop().toLowerCase();
 
     // If no file is selected
@@ -26,11 +25,13 @@ export const DragDrop = () => {
       alert("Please Upload a file.");
       setLoading(false);
       return;
-    } else if (fileExtension != "pdf") {
+    } else if (fileExtension !== "pdf") {
       alert("Only pdf");
+      setLoading(false);
     } else if (file.size > 1000000) {
       // Not more than 1MB
       alert("File is more than 1MB!");
+      setLoading(false);
     } else {
       const formData = new FormData();
       formData.append("file", file);
@@ -55,32 +56,26 @@ export const DragDrop = () => {
         <div
           onDragOver={(e) => {
             e.preventDefault();
-            setFileEnter(true);
+            setFileEnter(true); // Set fileEnter to true when dragging over the area
           }}
           onDragLeave={() => {
-            setFileEnter(false);
-          }}
-          onDragEnd={(e) => {
-            e.preventDefault();
-            setFileEnter(false);
+            setFileEnter(false); // Reset fileEnter when dragging leaves the area
           }}
           onDrop={(e) => {
             e.preventDefault();
-            setFileEnter(false);
+            setFileEnter(false); // Reset fileEnter after dropping
             const files = e.dataTransfer.files;
             if (files.length > 0) {
-              Array.from(files).forEach((file) => {
-                setFile(file);
-              });
+              setFile(files[0]); // Set the file
             }
           }}
           className={`${
             fileEnter ? "bg-red-700" : "bg-slate-500"
-          } mx-auto  bg-white flex flex-col w-full max-w-xs h-72 border-dashed items-center justify-center`}
+          } mx-auto flex flex-col w-full max-w-xs h-72 border-2 border-dashed items-center justify-center`}
         >
           <label
             htmlFor="file"
-            className="h-full flex flex-col justify-center text-center text-black"
+            className="h-full flex flex-col justify-center text-center text-white"
           >
             Click to upload or drag and drop
           </label>
