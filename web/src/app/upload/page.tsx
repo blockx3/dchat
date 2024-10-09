@@ -12,8 +12,8 @@ export default async function Page() {
         redirect('/');
     }
     return (
-        <div className="bg-[#0E0A24] min-h-screen text-white">
-            <div className="flex py-7 px-2 justify-between">
+        <div className="bg-[#0E0A24] min-h-screen text-white flex flex-col gap-20">
+            <div className="flex py-7 px-2 justify-between shadow-2xl">
                 <Image 
                     src={logo}
                     alt="logo"
@@ -22,8 +22,8 @@ export default async function Page() {
                 />
                 <ProfileDropdown />
             </div>
-            <DragDrop />
             {/* <Upload /> */}
+            <DragDrop />
         </div>
     )
 }
