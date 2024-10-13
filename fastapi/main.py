@@ -26,6 +26,13 @@ from io import BytesIO
 from PyPDF2 import PdfReader
 from langchain.schema import Document
 import uuid
+from langchain.chains import create_history_aware_retriever
+from langchain_core.prompts import MessagesPlaceholder
+
+from langchain_community.chat_message_histories import ChatMessageHistory
+
+from langchain_core.messages import HumanMessage
+
 
 load_dotenv()
 
@@ -75,64 +82,76 @@ def load_pdf_from_bytes(pdf_bytes):
     pdf_file = BytesIO(pdf_bytes)
     pdf_reader = PdfReader(pdf_file)
     return pdf_reader
-    
-
-history={}
 
 llm = ChatMistralAI(model="mistral-large-latest", api_key=secretAPI)
 
 
 # POST routes for Response
 
+store = {}
+
 @app.post("/getResponse")
 async def create_item(item: Item):
     vector_store = vector_db(item.collectionName)
     
     retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 6})
-
-    system_prompt = (
-        "You are an assistant for question-answering tasks. "
-        "Use the following pieces of retrieved context to answer "
-        "the question. If you don't know the answer, say that you "
-        "don't know. Use three sentences maximum and keep the "
-        "answer concise."
-        "\n\n"
-        "{context}"
-    )
-
-    prompt = ChatPromptTemplate.from_messages(
+    
+    ### Contextualize question ###
+    contextualize_q_system_prompt = """Given a chat history and the latest user question \
+    which might reference context in the chat history, formulate a standalone question \
+    which can be understood without the chat history. Do NOT answer the question, \
+    just reformulate it if needed and otherwise return it as is."""
+    contextualize_q_prompt = ChatPromptTemplate.from_messages(
         [
-            ("system", system_prompt),
+            ("system", contextualize_q_system_prompt),
+            MessagesPlaceholder("chat_history"),
             ("human", "{input}"),
         ]
     )
+    history_aware_retriever = create_history_aware_retriever(
+        llm, retriever, contextualize_q_prompt
+    )
 
+    ### Answer question ###
+    qa_system_prompt = """You are an assistant for question-answering tasks. \
+    Use the following pieces of retrieved context to answer the question. \
+    If you don't know the answer, just say that you don't know. \
+    Use three sentences maximum and keep the answer concise.\
 
-    question_answer_chain = create_stuff_documents_chain(llm, prompt)
-    rag_chain = create_retrieval_chain(retriever, question_answer_chain)
+    {context}"""
+    qa_prompt = ChatPromptTemplate.from_messages(
+        [
+            ("system", qa_system_prompt),
+            MessagesPlaceholder("chat_history"),
+            ("human", "{input}"),
+        ]
+    )
+    question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
 
-    response = rag_chain.invoke({"input": item.question})
-
-
-    return {"message": response["answer"]}
-
-# Post route for chathistory
-
-@app.post("/DynamicHistory")
-async def create_item(item: Item):
+    rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
 
     def get_session_history(session_id: str) -> BaseChatMessageHistory:
-        if session_id not in history:
-            history[session_id] = InMemoryChatMessageHistory()
-        return history[session_id]
+        if session_id not in store:
+            store[session_id] = ChatMessageHistory()
+        return store[session_id]
+
+
+    conversational_rag_chain = RunnableWithMessageHistory(
+        rag_chain,
+        get_session_history,
+        input_messages_key="input",
+        history_messages_key="chat_history",
+        output_messages_key="answer",
+    )
     
-    config = {"configurable": {"session_id": "firstchat"}}
+    ans = conversational_rag_chain.invoke(
+        {"input": f"{item.question}"},
+        config={
+            "configurable": {"session_id": f"{item.collectionName}"}
+        },
+    )["answer"]
     
-    model_with_memory=RunnableWithMessageHistory(llm,get_session_history)
-    
-    res = model_with_memory.invoke([HumanMessage(content=item.question)],config=config).content
-    
-    return {"message": res}
+    return {"message": f"{ans}"}
 
 # POST routes for storing pdf
 
