@@ -1,9 +1,14 @@
+
 import Image from "next/image";
 import logo from "../../../../public/logo.png";
+import Link from "next/link";
 
-export default function Footer() {
+export default function FooterSection() {
   return (
     <footer className="bg-[#0E0A24] pt-20 shadow-2xl">
+      <Link href="https://flowbite.com/" className="hover:bg-red-700">
+        hi
+      </Link>
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
@@ -22,13 +27,13 @@ export default function Footer() {
               </h2>
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-4">
-                  <a href="https://flowbite.com/" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     dchat
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a
-                    href="https://tailwindcss.com/"
+                    href="#"
                     className="hover:underline"
                   >
                     Chatbot
@@ -43,7 +48,7 @@ export default function Footer() {
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-4">
                   <a
-                    href="https://github.com/themesberg/flowbite"
+                    href="https://github.com/blockx3/dchat"
                     className="hover:underline "
                   >
                     Github
@@ -51,7 +56,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
-                    href="https://discord.gg/4eeurUVvTy"
+                    href="#"
                     className="hover:underline"
                   >
                     Discord
@@ -90,7 +95,7 @@ export default function Footer() {
           <div className="flex mt-4 sm:justify-center sm:mt-0">
             <a
               href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+              className="text-gray-500 hover:text-white"
             >
               <svg
                 className="w-4 h-4"
@@ -109,7 +114,7 @@ export default function Footer() {
             </a>
             <a
               href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5"
+              className="text-gray-500 hover:text-white ms-5"
             >
               <svg
                 className="w-4 h-4"
@@ -124,7 +129,7 @@ export default function Footer() {
             </a>
             <a
               href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5"
+              className="text-gray-500 hover:text-white ms-5"
             >
               <svg
                 className="w-4 h-4"
@@ -142,8 +147,8 @@ export default function Footer() {
               <span className="sr-only">Twitter page</span>
             </a>
             <a
-              href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5"
+              href="https://github.com/blockx3/dchat"
+              className="text-gray-500 hover:text-white ms-5"
             >
               <svg
                 className="w-4 h-4"
@@ -162,7 +167,7 @@ export default function Footer() {
             </a>
             <a
               href="#"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5"
+              className="text-gray-500 hover:text-white ms-5"
             >
               <svg
                 className="w-4 h-4"

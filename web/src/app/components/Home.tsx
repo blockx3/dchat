@@ -1,5 +1,7 @@
+'use client'
+
 import Description from "./Home/Description";
-import Footer from "./Home/Footer";
+import FooterSection from "./Home/FooterSection";
 import Hero from "./Home/Hero";
 import Navbar from "./Home/Navbar";
 import SliderPic from "./Home/SliderPic";
@@ -23,7 +25,7 @@ export default function Home() {
         <ThreeD />
       </div>
       {/* Footer */}
-      <Footer />
+      <FooterSection />
     </div>
   );
 }

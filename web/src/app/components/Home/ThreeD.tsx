@@ -5,6 +5,7 @@ import React from "react";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import Link from "next/link";
 import cardImg from "../../../../public/cardImg.jpg"
+import { signIn } from "next-auth/react"
 
 export function ThreeD() {
   return (
@@ -36,7 +37,7 @@ export function ThreeD() {
           <CardItem
             translateZ={20}
             as={Link}
-            href="https://twitter.com/mannupaaji"
+            href="https://github.com/blockx3/dchat"
             target="__blank"
             className="px-4 py-2 rounded-xl text-xs font-normal text-white"
           >
@@ -45,6 +46,9 @@ export function ThreeD() {
           <CardItem
             translateZ={20}
             as="button"
+            onClick={() => signIn(undefined,{
+              callbackUrl:"/upload"
+            })}
             className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
           >
             Sign up
