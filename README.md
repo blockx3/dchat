@@ -17,7 +17,7 @@ cd fastapi
 
 Create .env file and Copy the contents from .env.example
 
-3. **Run these Commands***
+3. **Run server***
 ```bash
 python main.py
 ```
