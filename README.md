@@ -2,6 +2,41 @@
 
 dchat is an AI-powered RAG-based chatbot that allows users to upload files and ask questions related to their content. It offers versatile use cases, with a key innovation focused on privacy. Uploaded files are securely handled, ensuring confidentiality. By logging in with a Google account, users can maintain and manage their chat history seamlessly. The chatbot leverages the Mistral AI LLM model, ensuring high-quality responses and efficient processing of user queries.
 
+## Development Setup
+
+### Backend Setup
+
+1. **Clone the Repository**
+
+```bash
+https://github.com/blockx3/dchat.git
+cd fastapi
+```
+
+2. **Environment File**
+
+Create .env file and Copy the contents from .env.example
+
+3. **Run these Commands***
+```bash
+python main.py
+```
+
+### Frontend Setup
+
+```bash
+cd web
+```
+
+2. **Environment File**
+
+Create .env file and Copy the contents from .env.example
+
+```bash
+npm install
+npm run dev
+```
+
 ## Contribution
 
 1. Pick an issue and suggest your solution OR create an issue regarding what better you can add to the project.
