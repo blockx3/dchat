@@ -5,6 +5,7 @@ import logo from "../../../public/logo.png"
 import { auth } from "../../../auth";
 import { redirect } from "next/navigation";
 import { DragDrop } from "../components/DragDrop";
+import SetApi from "../components/SetApi";
 
 export default async function Page() {
     const session = await auth();
@@ -24,6 +25,7 @@ export default async function Page() {
             </div>
             {/* <Upload /> */}
             <DragDrop />
+            <SetApi />
         </div>
     )
 }

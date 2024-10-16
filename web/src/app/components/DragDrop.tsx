@@ -11,41 +11,47 @@ export const DragDrop = () => {
   const router = useRouter();
 
   const handleUpload = async (e: { preventDefault: () => void }) => {
-    setLoading(true);
-    e.preventDefault();
-
-    // Get file extension like 'pdf, docx'
-    // TODO ts error
-
-    //@ts-expect-error TODO
-    const fileExtension = file.name.split(".").pop().toLowerCase();
-
-    // If no file is selected
-    if (!file) {
-      alert("Please Upload a file.");
-      setLoading(false);
-      return;
-    } else if (fileExtension !== "pdf") {
-      alert("Only pdf");
-      setLoading(false);
-    } else if (file.size > 1000000) {
-      // Not more than 1MB
-      alert("File is more than 1MB!");
-      setLoading(false);
+    console.log(localStorage.getItem("apikey"));
+    
+    if (localStorage.getItem("apikey") == "") {
+      alert("Submit API Key");
     } else {
-      const formData = new FormData();
-      formData.append("file", file);
+      setLoading(true);
+      e.preventDefault();
 
-      try {
-        const res = await upload(formData);
-        if (res) {
-          router.push(`/chat/${res}`);
+      // Get file extension like 'pdf, docx'
+      // TODO ts error
+
+      //@ts-expect-error TODO
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+
+      // If no file is selected
+      if (!file) {
+        alert("Please Upload a file.");
+        setLoading(false);
+        return;
+      } else if (fileExtension !== "pdf") {
+        alert("Only pdf");
+        setLoading(false);
+      } else if (file.size > 1000000) {
+        // Not more than 1MB
+        alert("File is more than 1MB!");
+        setLoading(false);
+      } else {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+          const res = await upload(formData);
+          if (res) {
+            router.push(`/chat/${res}`);
+          }
+        } catch (error) {
+          console.error("Upload failed", error);
+          alert("File upload failed.");
+        } finally {
+          setLoading(false); // Stop loading after the process is complete
         }
-      } catch (error) {
-        console.error("Upload failed", error);
-        alert("File upload failed.");
-      } finally {
-        setLoading(false); // Stop loading after the process is complete
       }
     }
   };

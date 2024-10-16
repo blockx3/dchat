@@ -43,6 +43,7 @@ secretAPI = os.getenv("MISTRAL_API_KEY")
 class Item(BaseModel):
     question: str
     collectionName: str
+    apiKey: str
     
 class Info(BaseModel):
     collectionName: str
@@ -83,8 +84,6 @@ def load_pdf_from_bytes(pdf_bytes):
     pdf_reader = PdfReader(pdf_file)
     return pdf_reader
 
-llm = ChatMistralAI(model="mistral-large-latest", api_key=secretAPI)
-
 
 # POST routes for Response
 
@@ -92,6 +91,7 @@ store = {}
 
 @app.post("/getResponse")
 async def create_item(item: Item):
+    llm = ChatMistralAI(model="mistral-large-latest", api_key=item.apiKey)
     vector_store = vector_db(item.collectionName)
     
     retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 6})

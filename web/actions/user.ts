@@ -4,14 +4,16 @@ import { prisma } from "@/app/lib/prisma";
 import axios from "axios";
 import { revalidatePath } from "next/cache";
 import { auth } from "../auth"
+import { redirect } from 'next/navigation'
 
-export async function create(question: string, context: string, collectionName: string) {
+export async function create(question: string, context: string, collectionName: string, apikey: string | null) {
   
     try {
       const response = await axios.post("http://0.0.0.0:8880/getResponse", {
         question,
         context, 
-        collectionName
+        collectionName,
+        apikey
       });
       await prisma.conversationHistory.create({
         data: {
@@ -27,6 +29,7 @@ export async function create(question: string, context: string, collectionName: 
       revalidatePath("/chat");
       return response.data.message;
     } catch(e) {
+      redirect('/upload');
       return e;
     }
 }

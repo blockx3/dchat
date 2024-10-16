@@ -31,6 +31,7 @@ export default function InputBox(props: Conversation) {
   const [context, setContext] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [tempHistory, setTempHistory] = useState<TempMessage[]>([]);
+  const apikey = localStorage.getItem('apikey');
 
   // It remove space from question.
 
@@ -64,7 +65,7 @@ export default function InputBox(props: Conversation) {
     if(collectionName == ""){
       alert("Select collection");
     } else {
-      await create(trimedQuestion, trimedContext, collectionName);
+      await create(trimedQuestion, trimedContext, collectionName, apikey);
     }
 
     setTempHistory([]);

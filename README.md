@@ -17,7 +17,7 @@ cd fastapi
 
 Create .env file and Copy the contents from .env.example
 
-3. **Run server***
+3. **Run server**
 ```bash
 python main.py
 ```
@@ -54,3 +54,13 @@ npm run dev
 7. Prisma ORM & PostgreSQL for database management
 8. Next-Auth for authentication
 9. Docker for containerized deployment
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+For any questions or inquiries, please contact:
+
+- **Thinley**: [thinleylama44@gmail.com](mailto:thinleylama44@gmail.com)
