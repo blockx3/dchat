@@ -13,7 +13,7 @@ export const DragDrop = () => {
   const handleUpload = async (e: { preventDefault: () => void }) => {
     console.log(localStorage.getItem("apikey"));
     
-    if (localStorage.getItem("apikey") == "") {
+    if (localStorage.getItem("apikey") == null) {
       alert("Submit API Key");
     } else {
       setLoading(true);

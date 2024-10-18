@@ -9,6 +9,7 @@ import {
 import ProfilePic from "./ProfilePic"
 import SignOut from "./SignOut"
 import UploadButton from "./UploadButton"
+import RemoveApi from "./RemoveApi"
   
 
 export default function ProfileDropdown() {
@@ -26,6 +27,9 @@ export default function ProfileDropdown() {
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         <UploadButton />
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                        <RemoveApi />
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

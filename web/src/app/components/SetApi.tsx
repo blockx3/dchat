@@ -1,10 +1,15 @@
 "use client";
 
+import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
 export default function SetApi() {
   const [apikey, setApiKey] = useState("");
+  const {toast} = useToast();
   function onSubmit() {
+    toast({
+      title: "API Key Set"
+    })
     localStorage.setItem("apikey", apikey);
   }
   return (

@@ -6,14 +6,14 @@ import { revalidatePath } from "next/cache";
 import { auth } from "../auth"
 import { redirect } from 'next/navigation'
 
-export async function create(question: string, context: string, collectionName: string, apikey: string | null) {
+export async function create(question: string, context: string, collectionName: string, apiKey: string | null) {
   
     try {
       const response = await axios.post("http://0.0.0.0:8880/getResponse", {
         question,
         context, 
         collectionName,
-        apikey
+        apiKey
       });
       await prisma.conversationHistory.create({
         data: {

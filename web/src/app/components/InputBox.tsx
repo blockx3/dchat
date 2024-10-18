@@ -31,7 +31,7 @@ export default function InputBox(props: Conversation) {
   const [context, setContext] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [tempHistory, setTempHistory] = useState<TempMessage[]>([]);
-  const apikey = localStorage.getItem('apikey');
+  const apiKey = localStorage.getItem('apikey');
 
   // It remove space from question.
 
@@ -53,19 +53,11 @@ export default function InputBox(props: Conversation) {
 
     setLoading(true); // Set loading to true when starting to generate the answer
     
-    // check collection in database
-    // const findCollection = await prisma.collection.findUnique({
-    //   where: {
-    //     CollectionName: collectionName
-    //   }
-    // })
-    // console.log(findCollection);
-    
 
     if(collectionName == ""){
       alert("Select collection");
     } else {
-      await create(trimedQuestion, trimedContext, collectionName, apikey);
+      await create(trimedQuestion, trimedContext, collectionName, apiKey);
     }
 
     setTempHistory([]);
