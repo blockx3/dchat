@@ -16,7 +16,7 @@ jobs:
           node-version: '20'
       
       - name: Change dir
-        run: cd web
+        run: cd ./web
 
       - name: Install Dependencies
         run: npm install
