@@ -14,12 +14,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      
-      - name: Change dir
-        run: cd ./web
 
       - name: Install Dependencies
-        run: npm install
+        run: cd web && npm install
         
       - name: Run Build
         run: npm run build
