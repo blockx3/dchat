@@ -4,10 +4,10 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install
+RUN cd web && npm install
 
-RUN npx prisma generate
+RUN cd web && npx prisma generate
 
-RUN npm run build
+RUN cd web && npm run build
 
 CMD ["npm", "run", "start"] 
