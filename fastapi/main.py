@@ -62,7 +62,6 @@ app.add_middleware(
 
 #DB connection string and collection name
 
-collection_name = os.getenv("collection_name")
 connection = os.getenv("connection")  # Uses psycopg3!
 
 # Common variables used in both POST routes
