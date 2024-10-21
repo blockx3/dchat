@@ -3,7 +3,7 @@ FROM node:20.12.0-alpine3.19
 WORKDIR /app
 
 COPY package* .
-COPY ./prisma .
+COPY prisma .
 
 RUN cd web && npm install
 
