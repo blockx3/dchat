@@ -1,13 +1,11 @@
 FROM node:20.12.0-alpine3.19
 
-WORKDIR /app
+COPY . /app
 
-COPY . .
+WORKDIR /app/web
 
-RUN cd web && npm install
+RUN npm ci && \
+    npx prisma generate && \
+    npm run build
 
-RUN cd web && npx prisma generate
-
-RUN cd web && npm run build
-
-CMD ["npm", "run", "start"] 
+CMD npm run start 
