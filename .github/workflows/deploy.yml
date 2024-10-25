@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check Out Repo
-      uses: actions/checkout@v3 # Clone the Repository
+      uses: actions/checkout@v4 # Clone the Repository
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
@@ -39,4 +39,4 @@ jobs:
           sudo docker pull thinley44/dchat-web:latest
           sudo docker stop dchat-web || true
           sudo docker rm dchat-web || true
-          sudo docker run -d --name dchat-web -p 3005:3000 thinley44/dchat-web:latest
+          sudo docker run -d --name dchat-web -p 3000:3000 thinley44/dchat-web:latest
