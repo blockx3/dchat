@@ -24,10 +24,10 @@ jobs:
         context: .
         file: ./web/Dockerfile
         push: true
-        tags: thinley44/dchat-web:latest  # Replace with your Docker Hub username and repository
+        tags: thinley44/dchat-web:latest 
 
     - name: Verify Pushed Image
-      run: docker pull thinley44/dchat-web:latest  # Replace with your Docker Hub username and repository
+      run: docker pull thinley44/dchat-web:latest 
     
     - name: Deploy to Server
       uses: appleboy/ssh-action@master
@@ -36,7 +36,11 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-          sudo docker pull thinley44/dchat-web:latest
-          sudo docker stop dchat-web || true
-          sudo docker rm dchat-web || true
-          sudo docker run -d --name dchat-web -p 3000:3000 thinley44/dchat-web:latest
+          cd composeFile/compose.yml
+          sudo docker-compose pull
+          sudo docker-compose up -d
+        # script: |
+        #   sudo docker pull thinley44/dchat-web:latest
+        #   sudo docker stop dchat-web || true
+        #   sudo docker rm dchat-web || true
+        #   sudo docker run -d --name dchat-web -p 3000:3000 thinley44/dchat-web:latest
