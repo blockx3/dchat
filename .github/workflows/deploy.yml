@@ -36,7 +36,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-          cd composeFile/compose.yml
+          cd ~/composeFile/compose.yml
           sudo docker-compose pull
           sudo docker-compose up -d
         # script: |
