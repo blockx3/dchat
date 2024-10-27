@@ -39,8 +39,3 @@ jobs:
           cd /root/composeFile
           sudo docker-compose pull
           sudo docker-compose up -d
-        # script: |
-        #   sudo docker pull thinley44/dchat-web:latest
-        #   sudo docker stop dchat-web || true
-        #   sudo docker rm dchat-web || true
-        #   sudo docker run -d --name dchat-web -p 3000:3000 thinley44/dchat-web:latest

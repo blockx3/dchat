@@ -1,6 +1,6 @@
 services:
   web:
-    image: thinley44/dchat-web:latest
+    build: .
     container_name: dchat-web
     env_file:
       - .env
@@ -11,11 +11,11 @@ services:
     restart: always
     
   db:
-    image: postgres:12
+    image: pgvector/pgvector:pg16
     container_name: dchat-db
     env_file:
       - .env
     ports:
       - 6024:5432
     restart: always
-  
+
