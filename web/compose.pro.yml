@@ -4,12 +4,19 @@ services:
     container_name: dchat-web
     env_file:
       - .env
-    ports:
-      - 3000:3000
     restart: always
     networks:
       network_prod:
         ipv4_address: 11.0.0.3
+  ai_backend:
+    image: thinley44/dchat-ai:latest
+    container_name: dchat-ai
+    env_file:
+      - .env
+    restart: always
+    networks:
+      network_prod:
+        ipv4_address: 11.0.0.4
 networks:
   network_prod:
     name: prod

@@ -9,7 +9,7 @@ import { redirect } from 'next/navigation'
 export async function create(question: string, context: string, collectionName: string, apiKey: string | null) {
   
     try {
-      const response = await axios.post("http://0.0.0.0:8880/getResponse", {
+      const response = await axios.post(`${process.env.AI_BACKEND_URL}:8880/getResponse`, {
         question,
         context, 
         collectionName,
@@ -38,7 +38,7 @@ export async function upload(formData: FormData) {
   try {
     const session = await auth();
     const result = await axios.post(
-        "http://0.0.0.0:8880/upload",
+        `${process.env.AI_BACKEND_URL}:8880/upload`,
         formData,  // Send the formData instead of the file directly
         {
             headers: { "Content-Type": "multipart/form-data" },
@@ -71,7 +71,7 @@ export async function upload(formData: FormData) {
 
 export async function deletePdf(collectionName: string){
   try {
-    await axios.delete( "http://0.0.0.0:8880/del", {
+    await axios.delete( `${process.env.AI_BACKEND_URL}:8880/del`, {
       data:{
         collectionName: collectionName
       }
