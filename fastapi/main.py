@@ -13,9 +13,6 @@ from langchain_core.prompts import ChatPromptTemplate
 
 from langchain_mistralai import ChatMistralAI
 
-from langchain_core.messages import HumanMessage     
-from langchain_core.chat_history import InMemoryChatMessageHistory
-
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from fastapi.middleware.cors import CORSMiddleware
@@ -31,14 +28,9 @@ from langchain_core.prompts import MessagesPlaceholder
 
 from langchain_community.chat_message_histories import ChatMessageHistory
 
-from langchain_core.messages import HumanMessage
 
 
 load_dotenv()
-
-# Secret keys
-
-secretAPI = os.getenv("MISTRAL_API_KEY")
 
 class Item(BaseModel):
     question: str
