@@ -37,5 +37,4 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           cd /root/composeFile
-          sudo docker-compose pull
           sudo docker-compose up -d
