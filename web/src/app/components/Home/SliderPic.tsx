@@ -11,7 +11,7 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 
 export default function SliderPic() {
-  const message = "Welcome_To_dchat";
+  const message = "Welcome-To-dchat";
   const characters = Array.from(message); // Convert string to an array of characters
 
   return (

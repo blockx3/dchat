@@ -3,7 +3,6 @@
 import Image from "next/image";
 import React from "react";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
-import Link from "next/link";
 import cardImg from "../../../../public/cardImg.jpg"
 import { signIn } from "next-auth/react"
 
@@ -15,14 +14,14 @@ export function ThreeD() {
           translateZ="50"
           className="text-xl font-bold text-white dark:text-white"
         >
-          Make things float in air
+          Chat History & File Storage
         </CardItem>
         <CardItem
           as="p"
           translateZ="60"
           className="text-white text-sm max-w-sm mt-2 dark:text-neutral-300"
         >
-          Hover over this card to unleash the power of CSS perspective
+          Users can access past chat interactions and view previously uploaded Files anytime.
         </CardItem>
         <CardItem translateZ="100" className="w-full mt-4">
           <Image
@@ -36,9 +35,6 @@ export function ThreeD() {
         <div className="flex justify-between items-center mt-20">
           <CardItem
             translateZ={20}
-            as={Link}
-            href="https://github.com/blockx3/dchat"
-            target="__blank"
             className="px-4 py-2 rounded-xl text-xs font-normal text-white"
           >
             Try now →

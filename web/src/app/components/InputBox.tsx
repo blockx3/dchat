@@ -5,7 +5,8 @@ import { create } from "../../../actions/user";
 import { Loader2, Pause } from "lucide-react";
 import { JsonValue } from "@prisma/client/runtime/library";
 import Image from "next/image";
-import logo from "../../../public/logo.png";
+import logo2 from "../../../public/d.png"
+import logo from "../../../public/logo.png"
 import arrow from "../../../public/arrow.png";
 
 interface History {
@@ -81,7 +82,7 @@ export default function InputBox(props: Conversation) {
               </div>
 
               <div className="flex items-start gap-2">
-                <Image src={logo} alt="logo" height={41} width={41} />
+                <Image src={logo2} className="rounded-full" alt="logo" height={41} width={41} />
                 <div className="border border-white p-3 rounded-[15px] max-w-[75%]">
                   {/* @ts-expect-error answer */}
                   {item.conversationObject?.answer}
@@ -99,7 +100,7 @@ export default function InputBox(props: Conversation) {
               </div>
               {/* Display loading spinner or the answer */}
               <div className="flex items-start gap-2">
-                <Image src={logo} alt="logo" height={41} width={41} />
+                <Image src={logo2} className="rounded-full" alt="logo" height={41} width={41} />
                 <div className="border border-white p-3 rounded-[15px] max-w-[75%]">
                   {item.answer === null ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
