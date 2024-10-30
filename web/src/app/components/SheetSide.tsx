@@ -59,7 +59,7 @@ export function SheetSide({ list,collectionName }: CollectionListProps) {
                         : 'bg-[#0E0A24] hover:bg-[#13102b]'
                     }`}
                   >
-                    <SheetTitle> {collection.pdfName} </SheetTitle>
+                    <SheetTitle> {collection.pdfName.slice(0,10)+'.pdf'} </SheetTitle>
                   </Button>
                   <SheetDescription>
                     <DeletePdf collectionName={collection.CollectionName} />
