@@ -7,7 +7,7 @@ import { JsonValue } from "@prisma/client/runtime/library";
 import Image from "next/image";
 import logo2 from "../../../public/d.png"
 import logo from "../../../public/logo.png"
-import arrow from "../../../public/arrow.png";
+import { Send } from 'lucide-react';
 
 interface History {
   id: string;
@@ -152,9 +152,7 @@ export default function InputBox(props: Conversation) {
                 <Pause className="border border-white" />
               </div>
             ) : (
-              <div>
-                <Image src={arrow} height={40} width={40} alt="arrow" />
-              </div>
+              <Send className="" />
             )}
           </button>
         </div>

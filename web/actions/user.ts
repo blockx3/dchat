@@ -29,7 +29,7 @@ export async function create(question: string, context: string, collectionName: 
       revalidatePath("/chat");
       return response.data.message;
     } catch(e) {
-      redirect('/upload');
+      redirect('/limit-cross');
       return e;
     }
 }

@@ -31,8 +31,13 @@ export function SheetSide({ list,collectionName }: CollectionListProps) {
   const [activeCollection, setActiveCollection] = useState<string | null>(collectionName);
 
   function handleClick(CollectionName: string) {
-    setActiveCollection(CollectionName);
-    router.push(`/chat/${CollectionName}`);
+    if(localStorage.getItem("apikey") === null) {
+      alert("Please set your API Key first")
+      return
+    } else {
+      setActiveCollection(CollectionName);
+      router.push(`/chat/${CollectionName}`);
+    }
   }
 
   return (
@@ -43,7 +48,7 @@ export function SheetSide({ list,collectionName }: CollectionListProps) {
         </SheetTrigger>
         <SheetContent className="bg-[#0E0A24]" side="left">
           <div className="text-white text-3xl py-10">
-            Chat History
+            Your PDF
           </div>
           {list.map((collection) => {
             const isActive = activeCollection === collection.CollectionName;
@@ -59,7 +64,7 @@ export function SheetSide({ list,collectionName }: CollectionListProps) {
                         : 'bg-[#0E0A24] hover:bg-[#13102b]'
                     }`}
                   >
-                    <SheetTitle> {collection.pdfName.slice(0,10)+'.pdf'} </SheetTitle>
+                    <SheetTitle> {collection.pdfName.length >10 ? collection.pdfName.slice(0,10)+'.pdf' : collection.pdfName} </SheetTitle>
                   </Button>
                   <SheetDescription>
                     <DeletePdf collectionName={collection.CollectionName} />
