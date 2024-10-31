@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { create } from "../../../actions/user";
 import { Loader2, Pause } from "lucide-react";
 import { JsonValue } from "@prisma/client/runtime/library";
@@ -32,7 +32,12 @@ export default function InputBox(props: Conversation) {
   const [context, setContext] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [tempHistory, setTempHistory] = useState<TempMessage[]>([]);
-  const apiKey = localStorage.getItem('apikey');
+  const [apiKey, setApiKey] = useState(null as string | null);
+
+  useEffect(() => {
+    const storedApiKey = localStorage.getItem("apikey");
+    setApiKey(storedApiKey);
+  },[]);
 
   // It remove space from question.
 

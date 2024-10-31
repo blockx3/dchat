@@ -11,7 +11,6 @@ export const DragDrop = () => {
   const router = useRouter();
 
   const handleUpload = async (e: { preventDefault: () => void }) => {
-    console.log(localStorage.getItem("apikey"));
     
     if (localStorage.getItem("apikey") == null) {
       alert("Submit API Key");
