@@ -4,7 +4,7 @@ import logo from "../../../public/logo.png"
 import { auth } from "../../../auth";
 import { redirect } from "next/navigation";
 import { DragDrop } from "../components/DragDrop";
-import SetApi from "../components/SetApi";
+// import SetApi from "../components/SetApi";
 import { Sidebar } from "./Components/Sidebar";
 
 export default async function Page() {
@@ -25,7 +25,7 @@ export default async function Page() {
                 <ProfileDropdown />
             </div>
             <DragDrop />
-            <SetApi />
+            {/* <SetApi /> */}
         </div>
     )
 }
