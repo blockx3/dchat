@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { upload } from "../../../actions/user";
 import { useRouter } from "next/navigation";
-import { CloudUpload } from "lucide-react";
+import { CloudUpload, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { LoadingUI } from "./LoadingUI";
 
@@ -127,8 +127,9 @@ export const DragDrop = () => {
         ) : (
           <div>
             {loading ? (
-              <div className="flex h-96 items-center justify-center">
+              <div className="flex flex-col gap-5 h-96 items-center justify-center">
                 <LoadingUI />
+                <Loader2 className="h-4 w-4 animate-spin" />
               </div>
             ) : (
               <div className="border border-gray-700 bg-[#0E0A24] rounded-lg shadow-xl p-8 flex flex-col items-center space-y-6 max-w-md mx-auto">
