@@ -3,7 +3,6 @@ import { useState } from "react";
 import { upload } from "../../../actions/user";
 import { useRouter } from "next/navigation";
 import { CloudUpload, Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { LoadingUI } from "./LoadingUI";
 
 
@@ -56,25 +55,6 @@ export const DragDrop = () => {
       }
     }
   };
-
-  // Set API Key
-
-  const [apikey, setApiKey] = useState(null as string | null);
-  const { toast } = useToast();
-
-  function onSubmit() {
-    toast({
-      title: "API Key Set",
-    });
-    if (apikey) {
-      localStorage.setItem("apikey", apikey);
-    }
-  }
-  function removeKey() {
-    setApiKey(null);
-    localStorage.removeItem("apikey");
-    router.refresh();
-  }
 
   return (
     <div>
@@ -159,51 +139,6 @@ export const DragDrop = () => {
             )}
           </div>
         )}
-      </div>
-
-      {/* Set API Key */}
-      <div className="flex justify-center pt-5">
-        <div className="flex flex-col gap-2">
-          {!localStorage.getItem("apikey") ? (
-            <>
-              <div className="text-red-500">
-                *Get your API Key from Mistral AI
-              </div>
-              <form
-                className="flex flex-col justify-center gap-2 md:flex"
-                onSubmit={onSubmit}
-              >
-                <input
-                  onChange={(e) => {
-                    setApiKey(e.target.value);
-                  }}
-                  type="text"
-                  id="first_name"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-72 p-2.5 "
-                  placeholder="Mistral API Key"
-                  required
-                />
-                <button className="bg-[#1C1A35] p-2 text-white" type="submit">
-                  Submit
-                </button>
-              </form>
-            </>
-          ) : (
-            <>
-              {loading ? (
-                <></>
-              ) : (
-                <button
-                  onClick={removeKey}
-                  className="bg-[#1C1A35] p-2 text-white"
-                  type="submit"
-                >
-                  Reset API Key
-                </button>
-              )}
-            </>
-          )}
-        </div>
       </div>
     </div>
   );

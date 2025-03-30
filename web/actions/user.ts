@@ -10,7 +10,6 @@ export async function create(
   question: string,
   context: string,
   collectionName: string,
-  apiKey: string | null
 ) {
   try {
     const response = await axios.post(
@@ -18,8 +17,7 @@ export async function create(
       {
         question,
         context,
-        collectionName,
-        apiKey,
+        collectionName
       }
     );
     await prisma.conversationHistory.create({
